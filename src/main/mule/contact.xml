@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:salesforce-composite="http://www.mulesoft.org/schema/mule/salesforce-composite"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce-composite http://www.mulesoft.org/schema/mule/salesforce-composite/current/mule-salesforce-composite.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<flow name="contactFlow" doc:id="b61e6cf5-4d7c-441b-83d1-c00f2ef9ac43" >
+		<set-payload value="#[message.payload [-1 to -4]]" doc:name="Set Payload" doc:id="42d84b24-0e7b-4f06-90cd-0268ffb1b95a" />
+		<foreach doc:name="For Each" doc:id="15de45b2-70bb-4286-bb38-9bd19b840088" >
+			<ee:transform doc:name="Transform Message" doc:id="3e8e1732-3ecf-4369-ae0c-92bf94826373">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			<salesforce-composite:execute-composite-request doc:name="Execute composite request" doc:id="b70ec3ea-27f7-427e-99ae-fb1d2bd0185d" config-ref="Salesforce_Composite_Config" />
+			<logger level="INFO" doc:name="Logger" doc:id="4f311e2e-28eb-4fb4-9aed-b91620ba12c3" message="#[payload]" />
+		</foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="00f97fa8-8b0b-4189-bc6d-f5d36d4b68b4" />
+	</flow>
+</mule>

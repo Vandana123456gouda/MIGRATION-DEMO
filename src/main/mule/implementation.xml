@@ -1,0 +1,63 @@
+<!-- [STUDIO:"cayenta-to-sfdc"]<?xml version="1.0" encoding="UTF-8"?> [STUDIO] -->
+
+<mule xmlns:outlook365="http://www.mulesoft.org/schema/mule/outlook365"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:s4hana="http://www.mulesoft.org/schema/mule/s4hana"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/s4hana http://www.mulesoft.org/schema/mule/s4hana/current/mule-s4hana.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/outlook365 http://www.mulesoft.org/schema/mule/outlook365/current/mule-outlook365.xsd">
+	<flow name="businessLogicFlow" doc:id="759839c4-b32d-4e87-9d36-ce63694cb83c">
+				<ee:transform doc:name="cayenta-to-sfdc" doc:id="015ecec4-2d34-416a-ab4b-0b14fa8b8028">
+			<ee:message>
+				<ee:set-payload resource="cayenta-to-sfdc.dwl" />
+			</ee:message>
+		</ee:transform>
+		<set-payload value="#[payload[-1 to -5]]" doc:name="Set Payload" doc:id="6aa6a7b4-f51a-49ae-b9d4-3826e5b885b9" />
+		<batch:job jobName="migrateContractsBatch" doc:id="5bd60a74-0002-4d70-ae4a-8211e67ae465" blockSize="10">
+            <batch:process-records>
+                <batch:step name="createContractstInSalesforceStep" doc:id="0faf8e94-bc67-4aec-a07f-685312d006ec">
+                    <batch:aggregator doc:name="Batch Aggregator" doc:id="5e4e5166-42c8-4be9-8198-ead74d8ca9ff" streaming="true">
+						<salesforce:query doc:name="Query" doc:id="d8aa1758-5157-419f-b23c-76cd5e005dff" config-ref="Salesforce_Config">
+							<salesforce:salesforce-query ><![CDATA[select id, name from Account]]></salesforce:salesforce-query>
+						</salesforce:query>
+						<choice doc:name="Choice" doc:id="26910018-2ae1-483b-a9b9-26b4ae8a0169" >
+							<when expression="#[(isEmpty(vars.Account))]">
+								<salesforce:create doc:name="Create" doc:id="3cafadae-ba11-40da-b546-e53a2384b2fb" config-ref="Salesforce_Config" type="Account"/>
+							</when>
+							<otherwise >
+								<logger level="INFO" doc:name="Logger" doc:id="5e1951cc-b0ce-4477-b48d-d628e3b9554c" message="successful"/>
+							</otherwise>
+						</choice>
+						<logger level="INFO" doc:name="Logger" doc:id="8cd4f0d2-bb8d-43f8-bcb0-940841d30f5e" message="migration done"/>
+                    
+
+</batch:aggregator>
+					<logger level="INFO" doc:name="Logger" doc:id="be4cf691-36eb-499b-9fc5-472ef1a2e889" message="#[payload]"/>
+                
+</batch:step>
+            
+</batch:process-records>
+			<batch:on-complete>
+				<logger level="INFO" doc:name="Logger" doc:id="74d0baec-0bb6-4a8e-a378-7f606e5fa6d2" message="completed"/>
+
+            </batch:on-complete>
+        
+</batch:job>
+    </flow>
+</mule>

@@ -1,0 +1,32 @@
+%dw 2.0
+
+type auto_b61e6cf5_4d7c_441b_83d1_c00f2ef9ac43_Input_Variables_rootMessage = {|
+  payload: Array<org_mule_runtime_api_message_Message>, 
+  attributes: Null
+|} {"typeId": "org.mule.runtime.api.message.Message"}
+type org_mule_runtime_api_message_Message = {|
+  payload: java_lang_Object, 
+  attributes: org_mule_extension_file_api_LocalFileAttributes
+|} {"typeId": "org.mule.runtime.api.message.Message"}
+type org_mule_extension_file_api_LocalFileAttributes = {|
+  lastModifiedTime: DateTime {"typeId": "java.time.LocalDateTime"}, 
+  lastAccessTime: DateTime {"typeId": "java.time.LocalDateTime"}, 
+  creationTime: DateTime {"typeId": "java.time.LocalDateTime"}, 
+  size: Number, 
+  regularFile?: Boolean {"typeId": "boolean"}, 
+  directory?: Boolean {"typeId": "boolean"}, 
+  symbolicLink?: Boolean {"typeId": "boolean"}, 
+  path: String, 
+  fileName: String
+|} {"typeAlias": "LocalFileAttributes",
+"typeId": "org.mule.extension.file.api.LocalFileAttributes"}
+
+
+type java_lang_Object = {|  |} {"typeAlias": "Object",
+"class": "java.lang.Object",
+"typeId": "java.lang.Object"}
+
+
+
+
+

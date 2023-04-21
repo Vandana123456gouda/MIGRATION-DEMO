@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="main-flowFlow" doc:id="c8651b1c-50a2-4241-bba3-6c7ee2968a91" >
+		<scheduler doc:name="Scheduler" doc:id="b5aaf034-2625-4b41-b02a-42f0f3c58603" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</scheduler>
+		<file:list doc:name="List" doc:id="944ca2f0-4075-48f0-a471-2f04df4fcb83" directoryPath="C:\Users\VG75840\Downloads\"/>
+		<ee:transform doc:name="Transform Message" doc:id="133b0fa3-da0b-462c-b715-39051624c4d7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="4e1c214e-0e48-433f-86dc-8c193e46ffb7" >
+			<ee:transform doc:name="set filename" doc:id="08de676e-902a-465e-bdb4-63dad20537ca">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var ssn = if(!isBlank(message.payload.SSN) and !isEmpty(message.payload.SSN) 
+	and message.payload.SSN != null and message.payload.SSN != "null" and message.payload.SSN != "NULL"
+) ((message.payload.SSN splitBy  "")[0 to 2] ++ (message.payload.SSN splitBy  "")[4 to 5] ++ 
+	(message.payload.SSN splitBy  "")[7 to 10]
+) joinBy  "" else ""
+---
+{
+	"allOrNone": true,
+	// "collateSubrequests": true,
+	
+	
+	"compositeRequest": [{
+		"method": "POST",
+//		"url": p('secure::sfdc.accountUrl'),
+		
+		
+		"url": "/services/data/v56.0/sobjects/Account",
+		"referenceId": "accountRef",
+		"body": {
+			"Name": payload.ACCOUNT_NAME,
+			"Cayenta_Account_Number__c": message.payload.'ACCOUNT_NO',
+			"CIS_Vertex_Account_Number__c": message.payload.'ACCOUNT_NO_CUSTOM_2',
+			"vlocity_cmt__Status__c": message.payload.'ACCOUNT_STAT',
+			"MailingStreet__c": message.payload.'STREET_NM',
+			"Mailing_City__c": message.payload.CITY,
+			"Mailing_Zip_Postal_Code__c": message.payload.'POSTAL_CD',
+			"Mailing_Country__c": message.payload.'COUNTRY_CD',
+			"Home_Phone__c": message.payload.PHONE_NO,
+			"Business_Phone_Number__c": message.payload.BUS_PHONE_NO,
+//            "Island__c": message.payload.ISLAND,
+
+
+//            "Usage__c": message.payload.LTM_USAGE,
+			
+			
+            // "Legal_Name__c" : message.payload.CONTACT_NAME,
+			
+			
+            // "Legal_Type__c" : "Corporation",
+			
+			
+            // "Legal_ZipCode__c" : "odit",
+			
+			
+            // "Legal_Street__c" : "in",
+			
+			
+            // "Last_Bill_Date__c": "",
+			
+			
+            "Account_Class__c": message.payload.ACCOUNT_CLASS,
+			"vlocity_cmt__BillCycle__c": message.payload.CYCLE_CD
+		}
+	},{
+		"method": "POST",
+		"url": "/services/data/v56.0/sobjects/Contact",
+		"referenceId": "contactRef",
+		"body": {
+			"AccountId": "@{accountRef.id}",
+			"FirstName": (payload.CONTACT_NAME splitBy " ")[0],
+			"LastName": (payload.CONTACT_NAME splitBy " ")[1],
+			"FirstName": "",
+//          "Contact_Title__c": message.payload.PERSON_NO,			
+            "Contact_Email__c": message.payload.CONTACT_EMAIL,
+			"Contact_Mobile_Phone__c": message.payload.CONTACT_PHONE_NO,
+			"Contact_Office_Phone__c": "",
+			"Contact_Other_Phone_Number__c": "",
+			"Business_Phone_Number__c": message.payload.CONTACT_BUS_PHONE_NO,
+			"MailingCity": message.payload.CITY,
+//			"Mailing_countryCode": message.payload.COUNTRY_CD,
+			"MailingStreet": message.payload.STREET_NM,
+//			"Mailing_latitude": null,
+			"MailingPostalCode": message.payload.POSTAL_CD,
+//			"geocodeAccuracy": null,
+//			"stateCode": null,
+			"MailingState": message.payload.PROVINCE_CD,
+			"Person_Number__c": message.payload.PERSON_NO,
+			"vlocity_cmt__DriversLicenseNumber__c": message.payload.I_DRIVERS_LIC_NO,
+            "SSN__c": ssn,
+            "PIN__c": message.payload.PIN
+		}
+	}]
+}]]></ee:set-payload>
+					<ee:set-attributes ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-attributes>
+			</ee:message>
+		</ee:transform>
+			<ee:transform doc:name="Transform Message" doc:id="ca2751df-557b-4f64-ac6d-9438b1360d95">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="7edab8a8-d60d-4d89-9adc-2a1f9c70a04f" name="choice-flow"/>
+		</foreach>
+	</flow>
+	<flow name="choice-flow" doc:id="0fa80d06-36fa-47c5-b096-11c970839914" >
+		<set-variable value="" doc:name="Set Variable" doc:id="6edf3440-1b33-4a3b-8987-c1f9a3745f43" variableName="fileName"/>
+		<choice doc:name="Choice" doc:id="6395121b-1e4e-42de-82ec-09c11a3826c3" >
+			<when expression="#[vars.fileName == false]">
+				<flow-ref doc:name="Account-migration" doc:id="9aa71ef1-1063-437a-9016-0e65c5b75456" name="businessLogicFlow"/>
+			</when>
+			<when expression="#[true]">
+				<flow-ref doc:name="Contact-migration" doc:id="971c067f-4fda-4287-b60a-55fe55b4e077" name="contactFlow"/>
+			</when>
+			<otherwise>
+				<logger level="INFO" doc:name="Logger" doc:id="2de7e308-4292-4bc5-9464-99700c4c6eea" message="payload"/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
