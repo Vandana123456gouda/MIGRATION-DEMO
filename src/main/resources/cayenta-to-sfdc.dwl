@@ -1,0 +1,135 @@
+%dw 2.0
+output application/json
+var data = payload map ((item , index) -> {
+	AccountId: "0017700000CcEryAAF",
+	ACCOUNT_CLASS_DFLT__c: item.ACCOUNT_CLASS_DFLT,
+	CONTRACT_SEQ__c: item.RTCAP_CNTRCT_SEQ,
+	Import_Source__c: "Cayenta",
+	OLD_CONTRACT__c: item.CTNUM,
+	CNTRCT_SEQ__c: item.RTCAP_CNTRCT_SEQ,
+	LOCATION_CLASS__c: item.LOCATION_CLASS,
+	ACCHG__c: item.ACCHG,
+	ACCHG_FEFF_DT__c: if (item.ACCHG_FEFF_DT != "")(item.ACCHG_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	ACCHG_LEFF_DT__c:  if (item.ACCHG_LEFF_DT !="") (item.ACCHG_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CCHG__c: item.CCHG,
+	CCHG_FEFF_DT__c: if (item.CCHG_FEFF_DT != "")(item.CCHG_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CCHG_LEFF_DT__c: if (item.CCHG_LEFF_DT != "") (item.CCHG_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CRATE__c: item.CRATE,
+	CRATE_FEFF_DT__c:  if (item.CRATE_FEFF_DT != "") (item.CRATE_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CRATE_LEFF_DT__c: if (item.CRATE_LEFF_DT != "") (item.CRATE_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CRATE2__c: item.CRATE2,
+	CR2S__c:  if (item.CR2S != "")(item.CR2S splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CR2E__c: if (item.CR2E !="") (item.CR2E splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CRATE3__c: item.CRATE3,
+	CR3S__c: if(item.CR3S != "") (item.CR3S splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CR3E__c: if(item.CR3E !="") (item.CR3E splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CRATE4__c: item.CRATE4,
+	CR4S__c: if(item.CR4S !="")(item.CR4S splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CR4E__c: if(item.CR4E !="") (item.CR4E splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CRATE5__c: item.CRATE5,
+	CR5S__c: if(item.CR5S !="") (item.CR5S splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CR5E__c: if(item.CR5E !="") (item.CR5E splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CNTRC_CNTRCT_CD__c:  if(item.CNTRC_CNTRCT_CD !="") item.CNTRC_CNTRCT_CD ++ "1" else "CNTRC2",
+	CNTRC_SERV_SEQ__c: item.CNTRC_SERV_SEQ,
+	CNTRC_CNTRCT_SEQ__c: item.CNTRC_CNTRCT_SEQ,
+	CNTRC_STR_DT__c: if(item.CNTRC_STR_DT !="") (item.CNTRC_STR_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CNTRC_END_DT__c: if(item.CNTRC_END_DT !="") (item.CNTRC_END_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	ADMIN__c: item.ADMIN,
+	ADMIN_FEFF_DT__c: if(item.ADMIN_FEFF_DT !="") (item.ADMIN_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	ADMIN_LEFF_DT__c: if(item.ADMIN_LEFF_DT !="") (item.ADMIN_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	ANNUL__c: item.ANNUL,
+	ANNUL_FEFF_DT__c: if(item.ANNUL_FEFF_DT !="") (item.ANNUL_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	ANNUL_LEFF_DT__c: if(item.ANNUL_LEFF_DT !="") (item.ANNUL_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CTNUM_FEFF_DT__c: if(item.CTNUM_FEFF_DT !="") (item.CTNUM_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CTNUM_LEFF_DT__c: if(item.CTNUM_LEFF_DT !="") (item.CTNUM_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CTVOL__c: item.CTVOL,
+	CTVOL_FEFF_DT__c: if(item.CTVOL_FEFF_DT !="") (item.CTVOL_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CTVOL_LEFF_DT__c: if(item.CTVOL_LEFF_DT !="") (item.CTVOL_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CUSTM__c: item.CUSTM,
+	CUSTM_FEFF_DT__c: if(item.CUSTM_FEFF_DT !="") (item.CUSTM_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	CUSTM_LEFF_DT__c: if(item.CUSTM_LEFF_DT !="") (item.CUSTM_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	DNOTC__c: item.DNOTC,
+	DNOTC_FEFF_DT__c: if(item.DNOTC_FEFF_DT !="") (item.DNOTC_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	DNOTC_LEFF_DT__c: if(item.DNOTC_LEFF_DT !="") (item.DNOTC_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	DOCTY__c: item.DOCTY,
+	DOCTY_FEFF_DT__c: if(item.DOCTY_FEFF_DT !="") (item.DOCTY_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	DOCTY_LEFF_DT__c: if(item.DOCTY_LEFF_DT !="") (item.DOCTY_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	DORDN__c: item.DORDN,
+	DORDN_FEFF_DT__c: if(item.DORDN_FEFF_DT !="") (item.DORDN_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	DORDN_LEFF_DT__c: if(item.DORDN_LEFF_DT !="") (item.DORDN_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	EVER__c: item."EVER#",
+	EVER_FEFF_DT__c: if(item."EVER#_FEFF_DT" !="") (item."EVER#_FEFF_DT" splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	EVER_LEFF_DT__c: if(item."EVER#_LEFF_DT" !="") (item."EVER#_LEFF_DT" splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	EVERG__c: item.EVERG,
+	EVERG_FEFF_DT__c: if(item.EVERG_FEFF_DT !="") (item.EVERG_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	EVERG_LEFF_DT__c: if(item.EVERG_LEFF_DT !="") (item.EVERG_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	INPBY__c: item.INPBY,
+	INPBY_FEFF_DT__c: if(item.INPBY_FEFF_DT !="") (item.INPBY_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	INPBY_LEFF_DT__c: if(item.INPBY_LEFF_DT !="") (item.INPBY_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	ISSBY__c: item.ISSBY,
+	ISSBY_FEFF_DT__c: if(item.ISSBY_FEFF_DT !="") (item.ISSBY_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	ISSBY_LEFF_DT__c: if(item.ISSBY_LEFF_DT !="") (item.ISSBY_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	LPO__c: item.LPO,
+	LPO_FEFF_DT__c: if(item.LPO_FEFF_DT !="") (item.LPO_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	LPO_LEFF_DT__c: if(item.LPO_LEFF_DT !="") (item.LPO_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MBROP__c: item.MBROP,
+	MBROP_FEFF_DT__c: if(item.MBROP_FEFF_DT !="") (item.MBROP_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MBROP_LEFF_DT__c: if(item.MBROP_LEFF_DT !="") (item.MBROP_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MCTRN__c: item.MCTRN,
+	MCTRN_FEFF_DT__c: if(item.MCTRN_FEFF_DT !="") (item.MCTRN_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MCTRN_LEFF_DT__c: if(item.MCTRN_LEFF_DT !="") (item.MCTRN_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MORDN__c: item.MORDN,
+	MORDN_FEFF_DT__c: if(item.MORDN_FEFF_DT !="") (item.MORDN_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MORDN_LEFF_DT__c: if(item.MORDN_LEFF_DT !="") (item.MORDN_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MSCTN__c: item.MSCTN,
+	MSCTN_FEFF_DT__c: if(item.MSCTN_FEFF_DT !="") (item.MSCTN_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	MSCTN_LEFF_DT__c: if(item.MSCTN_LEFF_DT !="") (item.MSCTN_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	PAYOF__c: item.PAYOF,
+	PAYOF_FEFF_DT__c: if(item.PAYOF_FEFF_DT !="") (item.PAYOF_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	PAYOF_LEFF_DT__c: if(item.PAYOF_LEFF_DT !="") (item.PAYOF_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	RTCAP__c: item.RTCAP,
+	RTCAP_FEFF_DT__c: if(item.RTCAP_FEFF_DT !="") (item.RTCAP_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	RTCAP_LEFF_DT__c: if(item.RTCAP_LEFF_DT !="") (item.RTCAP_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	SHTCD__c: item.SHTCD,
+	SHTCD_FEFF_DT__c: if(item.SHTCD_FEFF_DT !="") (item.SHTCD_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	SHTCD_LEFF_DT__c: if(item.SHTCD_LEFF_DT !="") (item.SHTCD_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	SRACC__c: item.SRACC,
+	SRACC_FEFF_DT__c: if(item.SRACC_FEFF_DT !="") (item.SRACC_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	SRACC_LEFF_DT__c: if(item.SRACC_LEFF_DT !="") (item.SRACC_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	SRAPP__c: item.SRAPP,
+	SRAPP_FEFF_DT__c: if(item.SRAPP_FEFF_DT !="") (item.SRAPP_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	SRAPP_LEFF_DT__c: if(item.SRAPP_LEFF_DT !="") (item.SRAPP_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	STDRD__c: item.STDRD,
+	STDRD_FEFF_DT__c: if(item.STDRD_FEFF_DT !="") (item.STDRD_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	STDRD_LEFF_DT__c: if(item.STDRD_LEFF_DT !="") (item.STDRD_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	TAAMT__c: item.TAAMT,
+	TAAMT_FEFF_DT__c: if(item.TAAMT_FEFF_DT !="") (item.TAAMT_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	TAAMT_LEFF_DT__c: if(item.TAAMT_LEFF_DT !="") (item.TAAMT_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	TGAAM__c: item.TGAAM,
+	TGAAM_FEFF_DT__c: if(item.TGAAM_FEFF_DT !="") (item.TGAAM_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	TGAAM_LEFF_DT__c: if(item.TGAAM_LEFF_DT !="") (item.TGAAM_LEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	VENDR__c: item.VENDR,
+	VENDR_FEFF_DT__c: if(item.VENDR_FEFF_DT !="") (item.VENDR_FEFF_DT splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else '',
+	VENDR_LEFF_DT__c: if(item."VENDR_LEFF_DT\ufffd" !="") (item."VENDR_LEFF_DT\ufffd" splitBy ("T"))[0] as Date {format: 'yyyy-MM-dd'} else ''
+})
+fun emptyFilter(value: Any, predicate: (value:Any) -> Boolean) =
+    value  match {
+            case object is Object ->  do {
+               object mapObject ((value, key, index) -> 
+                    (key): emptyFilter(value, predicate)
+                )
+                filterObject ((value, key, index) -> predicate(value))
+            }
+            case array is Array -> do {
+                    array map ((item, index) -> emptyFilter(item, predicate))
+                                         filter ((item, index) -> predicate(item))                 
+            }
+            else -> $
+    }
+---
+data emptyFilter ((value) -> 
+    value match {
+        case v is Array| Null | "" -> !isEmpty(v)
+        else -> true
+    }
+)
